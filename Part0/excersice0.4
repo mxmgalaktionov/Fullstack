@@ -1,0 +1,25 @@
+sequenceDiagram
+    participant browser
+    participant server
+    participant database
+
+    Note right of browser: User writes a new note and clicks Save
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    server-->>-browser: HTTP 302 Redirect to /exampleapp/notes
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server-->>browser: HTML document (updated)
+    deactivate server
+
+    Note right of browser: Browser starts executing JavaScript to render notes
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: Updated notes data [{ "content": "HTML is easy", "date": "2023-1-1" }, { "content": "New note content", "date": "2024-04-03" }]
+    deactivate server
+
+    Note right of browser: Browser executes callback function to render updated notes
